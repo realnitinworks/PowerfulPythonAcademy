@@ -1,0 +1,72 @@
+This lab is more free-form than the previous ones. You are going to
+use the observer pattern to implement an application that can watch a file.
+
+In this lab, you write a program called `filewatch.py`, that watches a
+file's size. You're going to run this file on the command line, and it
+will take one argument: the file to watch. One simple way to do this
+is with `sys.argv`:
+
+----
+import sys
+file_to_watch = sys.argv[1]
+----
+
+Inside your program, create a `FileWatcher` class. This class keeps
+polling a specific file:
+
+----
+class FileWatcher:
+    def __init__(self, path_of_file_to_watch):
+	self.path = path_of_file_to_watch
+----
+
+When it notices a change in size, it broadcasts that event to any
+observers who asked to be notified. Specifically, it passes the new
+file size in bytes as the message.
+
+In addition to `FileWatcher`, you are going to create a `FileObserver`
+class, and two observer objects, named after people: "Bob" and
+"Stacy". Both will subscribe to the `FileWatcher`
+instance. When informed that the file has changed, each observer will
+print a message like the following to standard out:
+
+----
+Bob noticed the file is now 4 bytes
+----
+
+Your program should run persistently, until you interrupt or abort
+it. While it is running, you trigger events by modifying the watched
+file (in an editor, etc.) Some hints:
+
+ * You may want to use `os.stat` to check the file size.
+ * You can poll by using `time.sleep` in a while loop. (Don't wait
+   more than 1 second between checks.)
+
+EXTRA CREDIT:
+
+Make a copy of 'filewatch.py', named 'filewatch_extra.py'.  In this
+new file, modify your program to distinguish between two types of
+changes: increases in filesize, and decreases in filesize.
+
+Let observers subscribe to one type of event, or both.  Create these
+three observers:
+
+ 1) Bob is notified of file size increases,
+ 2) Stacy is notified of file size decreases,
+ 3) John is notified of any change at all.
+
+The output for an increase event will look like:
+
+----
+Bob noticed the file increased to 4 bytes
+John noticed the file increased to 4 bytes
+----
+
+For a decrease, it looks like:
+
+----
+Stacy noticed the file decreased to 4 bytes
+John noticed the file decreased to 4 bytes
+----
+
+# Part of Powerful Python Academy. Copyright MigrateUp LLC. All rights reserved.
