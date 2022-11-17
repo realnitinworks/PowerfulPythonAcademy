@@ -1,0 +1,62 @@
+This class focuses on Python 3. When applying what you've learned to
+Python 2.7 code, here are the most important differences.
+
+1) RUN TEST MODULE NAMES
+
+In Python 2, when you run tests in a single file, you MUST specify the
+Python module name it creates:
+
+----
+python3 -m unittest test_splitting
+----
+
+Python 3 lets you pass in "test_splitting.py" instead for that last
+argument, but if you do this in Python 2, you'll get a confusing
+error message:
+
+----
+AttributeError: 'module' object has no attribute 'py'
+----
+
+This gives an extra challenge in Python 2 if you want to run a test
+file which is not in the current directory. For example, what if your
+test file is in a subdirectory called "tests"? You could execute them
+in Python 3 with this:
+
+----
+python3 -m unittest tests/test_splitting.py
+----
+
+But omitting the ".py" doesn't work, because the name of the module is
+"test_splitting". Not "test/test_splitting". The solution in Python 2
+is to set PYTHONPATH:
+
+----
+# In MacOS/Linux/Unix
+export PYTHONPATH=./tests
+python -m unittest test_splitting
+----
+
+In Windows, you need to set PYTHONPATH as a system variable.
+
+2) SUBTESTS
+
+Subtests were introduced in Python 3.4, and were never backported to
+Python 2. However, you can still use them in your 2.x code by
+installing the unittest2 module:
+
+https://pypi.org/project/unittest2/
+
+Another option is to use the parameterized tests in Pytest, which is a
+similar feature; Pytest currently supports Python 2.7.
+
+3) MOCKS
+
+The unittest.mock library was added in Python 3.3. But the fix is
+simple: in any earlier version, all the way back to 2.6 (currently),
+you can simply install the "mock" library:
+
+https://pypi.org/project/mock/
+
+Once installed, import your mocking tools from that
+library. Essentially everything works the same.
