@@ -1,0 +1,33 @@
+# .next() instead of .__next__()
+
+In Python 3, iterator objects have a method called __next__(). This is
+invoked by the next() built-in function, for example, to obtain the
+next element in the list. In Python 2, this method was called next(),
+without the underscores.
+
+# Dict Views
+
+The Iteration video describes dict views as an example of an iterable
+built into Python. The methods of Python 2's dict type work a little
+differently:
+
+* The items() method returns a list of (key, value) tuples, instead
+  of a dictionary view.
+
+* It adds a method named iteritems() method, which returns an iterator
+  of the key-value pairs.
+
+* Later in the Python 2 series, a viewitems() method was added,
+  returning a dict view. This view object behaves essentially
+  identical to the object returned by .items() in Python 3. (This
+  obsoleted iteritems(), though few Python 2 users seemed to ever
+  realize it.)
+
+In the transition from Python 2 to Python 3, the viewitems() method
+was renamed to items(), and the old items() and iteritems() methods
+went away completely. And the story is similar to all the above for
+the keys() and values() methods (viewkeys() and viewvalues(), etc.)
+
+
+
+
