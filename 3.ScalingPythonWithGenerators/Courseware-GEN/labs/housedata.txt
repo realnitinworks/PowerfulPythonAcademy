@@ -1,0 +1,11 @@
+address: 1423 99th Ave
+square_feet: 1705
+price_usd: 340210
+
+address: 1423 99th Ave
+square_feet: 1705
+price_usd: 340210
+
+address: 1423 99th Ave
+square_feet: 1705
+price_usd: 340210

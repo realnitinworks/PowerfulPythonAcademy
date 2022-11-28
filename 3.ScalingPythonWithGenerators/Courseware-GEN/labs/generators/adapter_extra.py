@@ -1,4 +1,4 @@
-'''
+"""
 This lab is meant to challenge you with a more realistic engineering
 application of generators: producing record data from a text file of
 unbounded length, where each record spans multiple lines.
@@ -84,27 +84,60 @@ Traceback (most recent call last):
 ...
 StopIteration
 
-'''
+"""
 
 from os.path import dirname, join
+
 this_directory = dirname(__file__)
 
+
 def fullpath(filename):
-    '''Returns the full path of a file in this directory. Allows you to
+    """Returns the full path of a file in this directory. Allows you to
     run the lab easily in an IDE, or from a different working directory.
-    '''
+    """
     return join(this_directory, filename)
+
 
 # Write your code here:
 
 
+def warc_records(filepath):
+    header_blank_count = 0
+    with open(filepath) as f:
+        for line in f:
+            if not line.strip():
+                header_blank_count += 1
+            else:
+                header_blank_count = 0
+            if header_blank_count == 2:
+                break
+
+        blank_line_count = 0
+        record = {}
+        for line in f:
+            line = line.strip()
+            if line == "WARC/1.0":
+                continue
+            if not line:
+                blank_line_count += 1
+            if blank_line_count == 1:
+                record["Content"] = next(f)
+                continue
+            if blank_line_count == 2:
+                yield record
+                blank_line_count = 0
+                continue
+            key, value = line.split(": ", maxsplit=1)
+            record[key] = value
+
 
 # Do not edit any code below this line!
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     count, _ = doctest.testmod()
     if count == 0:
-        print('*** ALL TESTS PASS ***\nGive someone a HIGH FIVE!')
+        print("*** ALL TESTS PASS ***\nGive someone a HIGH FIVE!")
 
 # Part of Powerful Python Academy. Copyright MigrateUp LLC. All rights reserved.

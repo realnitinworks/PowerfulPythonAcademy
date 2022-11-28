@@ -1,4 +1,4 @@
-'''In this lab, you practice "fanning in" and "fanning out" with generator functions.
+"""In this lab, you practice "fanning in" and "fanning out" with generator functions.
 
 NOTE: The methods of str are detailed here:
 https://docs.python.org/3/library/stdtypes.html#string-methods
@@ -151,27 +151,55 @@ Traceback (most recent call last):
 ...
 StopIteration
 
-'''
+"""
 
 from os.path import dirname, join
+import string
+
 this_directory = dirname(__file__)
 
+
 def fullpath(filename):
-    '''Returns the full path of a file in this directory. Allows you to
+    """Returns the full path of a file in this directory. Allows you to
     run the lab easily in an IDE, or from a different working directory.
-    '''
+    """
     return join(this_directory, filename)
+
 
 # Write your code here:
 
 
+def words_in_text(filepath):
+    with open(filepath) as f:
+        for line in f:
+            pattern = f"{string.punctuation}\n"
+            for word in line.lower().split():
+                yield word.strip(pattern)
+
+
+def book_records(filepath):
+    with open(filepath) as f:
+        book = {}
+        for line in f:
+            line = line.strip()
+            if not line:
+                yield book
+                book = {}
+                continue
+            key, val = line.strip().split(": ", maxsplit=1)
+            if key == "price":
+                val = float(val)
+            book[key] = val
+        yield book
+
 
 # Do not edit any code below this line!
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     count, _ = doctest.testmod()
     if count == 0:
-        print('*** ALL TESTS PASS ***\nGive someone a HIGH FIVE!')
+        print("*** ALL TESTS PASS ***\nGive someone a HIGH FIVE!")
 
 # Part of Powerful Python Academy. Copyright MigrateUp LLC. All rights reserved.
